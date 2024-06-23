@@ -1,0 +1,14 @@
+{
+    "QwManager": {
+        "contractAddress": "0x067bbe27c47c02f12096e3ac9bd3b449ac5ea2d5fddc69f764f8afdac0109bea",
+        "classHash": "0x00a24b180ca2733ed78733c67ae307351662850faed979eb66506436fd2def38"
+    },
+    "QwRegistry": {
+        "contractAddress": "0x018cbcbef144484262df2a3b13c32546885184ce6219ce546565db1bade1f294",
+        "classHash": "0x000c61b81aaffd1e5b4b17f5d255e9f1f18cdb67c697061aca97c4a81df3c07a"
+    },
+    "QwChild": {
+        "contractAddress": "0x01b6bd53861c8b1ca4766c3c8844c65a73d9f54594b65278c45b25c0358c56d5",
+        "classHash": "0x070c75a903c4113422419a5a6de926e5c6e5376f7cdaa6bcd74d79ad47b4031e"
+    }
+}
