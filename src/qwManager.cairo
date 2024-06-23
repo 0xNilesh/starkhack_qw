@@ -21,8 +21,11 @@ trait IERC20<T> {
 
 #[starknet::interface]
 trait IManager<T> {
+    // Returns the registry address
+    fn getRegistry(self: @T) -> ContractAddress;
     // Executes the investment
     fn execute(ref self: T, targetQwChilds_: Array<ContractAddress>, tokenAddress_: Array<ContractAddress>, amount_: Array<u128>);
+    // Closes the investment
     fn close(ref self: T, targetQwChilds_: Array<ContractAddress>, tokenAddress_: Array<ContractAddress>, amount_: Array<u128>);
 }
 
@@ -35,9 +38,11 @@ trait IRegistry<T> {
 #[starknet::interface]
 trait IChild<T> {
     // Executes the investment
-    fn create(self: @T, tokenAddress_: ContractAddress, amount_: u256) -> ContractAddress;
+    fn create(ref self: T, tokenAddress_: ContractAddress, amount_: u256);
     // Closes the investment
-    fn close(self: @T, tokenAddress_: ContractAddress, amount_: u256) -> ContractAddress;
+    fn close(ref self: T, tokenAddress_: ContractAddress, amount_: u256);
+    // Returns the manager address
+    fn getManager(self: @T) -> ContractAddress;
 }
 
 #[starknet::contract]
@@ -52,8 +57,7 @@ mod QwManager {
     // *************************************************************************
     #[storage]
     struct Storage {
-        registry: IRegistryDispatcher,
-        whitelist: LegacyMap<ContractAddress, bool>
+        registry: IRegistryDispatcher
     }
 
     // *************************************************************************
@@ -80,6 +84,9 @@ mod QwManager {
     // *************************************************************************
     #[abi(embed_v0)]
     impl QwManager of super::IManager<ContractState> {
+        fn getRegistry(self: @ContractState) -> ContractAddress {
+            self.registry.read().contract_address
+        }
         fn execute(ref self: ContractState, targetQwChilds_: Array<ContractAddress>, tokenAddress_: Array<ContractAddress>, amount_: Array<u128>) {
             assert(targetQwChilds_.len() == tokenAddress_.len(), Errors::Invalid_Input_Length);
             assert(targetQwChilds_.len() == amount_.len(), Errors::Invalid_Input_Length);

@@ -8,6 +8,8 @@ trait IRegistry<T> {
     fn getIsChildWhitelisted(self: @T, child_: ContractAddress) -> bool;
     // Registers the child contract
     fn registerChild(ref self: T, child_: ContractAddress);
+    // Updates the manager address
+    fn updateManager(ref self: T, manager_: ContractAddress);
 }
 
 #[starknet::interface]
@@ -56,15 +58,16 @@ mod QwRegistry {
     //                              CONSTRUCTOR
     // *************************************************************************
     #[constructor]
-    fn constructor(ref self: ContractState, manager_: ContractAddress) {
-        self.manager.write(manager_);
-    }
+    fn constructor(ref self: ContractState) { }
 
     // *************************************************************************
     //                              EXTERNAL FUNCTIONS
     // *************************************************************************
     #[abi(embed_v0)]
     impl QwRegistry of super::IRegistry<ContractState> {
+        fn updateManager(ref self: ContractState, manager_: ContractAddress) {
+            self.manager.write(manager_);
+        }
         fn getManager(self: @ContractState) -> ContractAddress {
             self.manager.read()
         }
